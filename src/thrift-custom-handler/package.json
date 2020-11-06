@@ -1,0 +1,5 @@
+{
+  "name": "thrift-custom-handler",
+  "version": "0.5.14-alpha",
+  "main": "index.cjs.js"
+}

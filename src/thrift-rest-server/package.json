@@ -1,0 +1,5 @@
+{
+  "name": "thrift-rest-server",
+  "version": "0.0.1",
+  "main": "index.cjs.js"
+}

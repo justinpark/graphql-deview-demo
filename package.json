@@ -1,0 +1,43 @@
+{
+  "name": "graphql-deview-demo",
+  "license": "MIT",
+  "scripts": {
+    "start:thrift": "ts-node src/main.ts",
+    "start:mesh": "mesh serve",
+    "start:rest": "ts-node src/client.ts",
+    "start": "concurrently \"yarn start:thrift\" \"yarn start:mesh\"",
+    "codegen": "thrift-typescript --target thrift-server --sourceDir ./src --outDir ./src/codegen"
+  },
+  "dependencies": {
+    "@creditkarma/thrift-client": "^0.16.1",
+    "@creditkarma/thrift-server-core": "^0.16.1",
+    "@creditkarma/thrift-server-express": "^0.16.1",
+    "@creditkarma/thrift-typescript": "^3.7.6",
+    "@graphql-mesh/cli": "^0.11.3",
+    "@graphql-mesh/thrift": "0.5.14",
+    "express": "^4.17.1",
+    "graphql": "^15.3.0",
+    "json-server": "^0.16.2",
+    "thrift": "^0.13.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.8",
+    "concurrently": "^5.3.0",
+    "thrift-custom-handler": "file:src/thrift-custom-handler",
+    "thrift-rest-server": "file:src/thrift-rest-server"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+sources:
+  - name: Market
+    handler:
+      thrift-custom-handler:
+        idl: ./src/thrift/market_service.thrift
+        hostName: localhost
+        port: 8080
+        path: /thrift
+        serviceName: market-service
