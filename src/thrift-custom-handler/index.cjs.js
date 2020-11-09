@@ -219,7 +219,11 @@ class ThriftHandler {
                             if (fieldType === thriftServerCore.TType.STOP) {
                                 break;
                             }
-                            result[fieldName] = this.readType(fieldType, input, fields);
+                            if (fieldName && fieldName.name) {
+                                result[fieldName.name] = this.readType(fieldType, input, fieldName.fields);
+                            } else {
+                                result[fieldName] = this.readType(fieldType, input, fields);
+                            }
                             input.readFieldEnd();
                         }
                         input.readStructEnd();
@@ -232,8 +236,8 @@ class ThriftHandler {
                         const result = {};
                         const map = input.readMapBegin();
                         for (let i = 0; i < map.size; i++) {
-                            const key = this.readType(map.keyType, input);
-                            const value = this.readType(map.valueType, input);
+                            const key = this.readType(map.keyType, input, fields);
+                            const value = this.readType(map.valueType, input, fields);
                             result[key] = value;
                         }
                         input.readMapEnd();
@@ -243,7 +247,7 @@ class ThriftHandler {
                         const result = [];
                         const list = input.readListBegin();
                         for (let i = 0; i < list.size; i++) {
-                            const element = this.readType(list.elementType, input);
+                            const element = this.readType(list.elementType, input, fields);
                             result.push(element);
                         }
                         input.readListEnd();
@@ -253,7 +257,7 @@ class ThriftHandler {
                         const result = [];
                         const list = input.readSetBegin();
                         for (let i = 0; i < list.size; i++) {
-                            const element = this.readType(list.elementType, input);
+                            const element = this.readType(list.elementType, input, fields);
                             result.push(element);
                         }
                         input.readSetEnd();
@@ -504,9 +508,19 @@ class ThriftHandler {
                                     };
                                     fieldTypeMap[fieldName] = typeVal;
                                 }
-                                Object.entries(responseTypeVal.fields).forEach(([fieldName, { id }]) => {
-                                    responseTypeMap[id] = fieldName;
-                                });
+
+                                function getTypeMap(typeMap, fields) {
+                                    Object.entries(fields).forEach(([fieldName, { id, elementType }]) => {
+                                        if (elementType && elementType.fields) {
+                                            const subMap = {};
+                                            getTypeMap(subMap, elementType.fields);
+                                            typeMap[id] = { name: fieldName, fields: subMap };
+                                        } else {
+                                            typeMap[id] = fieldName;
+                                        }
+                                    });
+                                }
+                                getTypeMap(responseTypeMap, responseTypeVal.fields);
                                 rootFields[fnName] = {
                                     type: returnType,
                                     description,

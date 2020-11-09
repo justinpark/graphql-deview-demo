@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { createThriftServer } from '@creditkarma/thrift-server-express';
 import { Market, IPdpRequest, IPdpResponseArgs } from './codegen';
-//IPdpResponseArgs
+// import { Market, IPdpRequest, IPdpResponseArgs, IUIResponseArgs } from './codegen';
 const PORT = 8080;
 
 const serviceHandlers: Market.IHandler<express.Request> = {
@@ -12,6 +12,47 @@ const serviceHandlers: Market.IHandler<express.Request> = {
       price: 350000,
     };
   },
+
+  // getUI(): IUIResponseArgs {
+  //   // SectionComponentType.TITLE
+  //   return {
+  //     sections: [
+  //       {
+  //         id: 'title01',
+  //         sectionComponentType: 'TITLE',
+  //         section: {
+  //           title: {
+  //             title: '데뷰 2020 데모',
+  //           }
+  //         }
+  //       },
+  //       {
+  //         id: 'title02',
+  //         sectionComponentType: 'TITLE',
+  //         section: {
+  //           title: {
+  //             title: '환영합니다'
+  //           }
+  //         }
+  //       },
+  //       {
+  //         id: 'banner01',
+  //         sectionComponentType: 'BANNER',
+  //         section: {
+  //           banner: {
+  //             title: '배너 제목 입니다'
+  //           }
+  //         }
+  //       },
+  //     ],
+  //     layouts: [
+  //       {
+  //         id: 'MAIN',
+  //         sectionIds: ['title01', 'banner01', 'title02'],
+  //       }
+  //     ],
+  //   };
+  // }
 };
 
 const app: express.Application = createThriftServer({
